@@ -38,7 +38,7 @@ void drawRed() {
 }
 
 int main(int argv, char** args) {
-	ShowImage image("E:/Projects/C++/SDL_test/build/marriage.png");
+	ShowImage image("img/marriage.png");
 	image.loadImage();
 	return 0;
 }
