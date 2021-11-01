@@ -23,5 +23,5 @@ class directionImage {
     bool init();
     bool loadMedia();
     void close();
-    SDL_Surface* loadSurface(std::string path);
+    SDL_Surface* loadSurface(const std::string& path);
 };
