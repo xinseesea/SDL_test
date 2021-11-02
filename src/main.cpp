@@ -5,7 +5,9 @@
 
 int main(int argv, char** args) {
 //    ShowImage image("img/marriage.png");
-//    image.loadImage();
+//    image.run();
+    directionImage image;
+    image.run();
 
     return 0;
 }

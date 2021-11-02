@@ -10,18 +10,20 @@ enum class KeyPress : uint8_t {
     KEY_PRESS_DOWN,
     KEY_PRESS_LEFT,
     KEY_PRESS_RIGHT,
-    KEY_PRESS_TOTAL,
 };
 
 class directionImage {
-    SDL_Window* window = nullptr;
-    SDL_Surface* screenSurface = nullptr;
-    SDL_Surface* currentSurface = nullptr;
+    SDL_Window *window = nullptr;
+    SDL_Surface *screenSurface = nullptr;
+    SDL_Surface *currentSurface = nullptr;
 
-    std::map<KeyPress, SDL_Surface*> keyPressSurface;
+    std::map<KeyPress, SDL_Surface *> keyPressSurface;
 
     bool init();
     bool loadMedia();
     void close();
-    SDL_Surface* loadSurface(const std::string& path);
+    SDL_Surface *loadSurface(const std::string &path);
+
+public:
+    bool run();
 };

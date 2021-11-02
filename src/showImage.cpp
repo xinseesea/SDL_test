@@ -40,43 +40,40 @@ void ShowImage::close() {
     SDL_Quit();
 }
 
-void ShowImage::loadImage() {
+bool ShowImage::run() {
     if (!init()) {
         std::cout << "Failed to init" << std::endl;
-    } else {
-        if (!loadMedia()) {
-            std::cout << "Failed to load media" << std::endl;
-        }
-        else
-        {
-            int w = gHellowWorld->w;
-            int h = gHellowWorld->h;
-            SDL_SetWindowSize(gWindow, w, h);
-            gScreenSurface = SDL_GetWindowSurface(gWindow);
+        return false;
+    }
+    if (!loadMedia()) {
+        std::cout << "Failed to load media" << std::endl;
+        return false;
+    }
 
-            bool isRunning = true;
-            SDL_Event event;
-            while (isRunning) {
-                while (SDL_PollEvent(&event))
-                {
-                    switch (event.type)
-                    {
-                    case SDL_QUIT:
-                        isRunning = false;
-                        break;
-                    case SDL_KEYDOWN:
-                        if (event.key.keysym.sym == SDLK_ESCAPE)
-                        {
-                            isRunning = false;
-                        }
-                        break;
-                    }
+    int w = gHellowWorld->w;
+    int h = gHellowWorld->h;
+    SDL_SetWindowSize(gWindow, w, h);
+    gScreenSurface = SDL_GetWindowSurface(gWindow);
+
+    bool isRunning = true;
+    SDL_Event event;
+    while (isRunning) {
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+            case SDL_QUIT:
+                isRunning = false;
+                break;
+            case SDL_KEYDOWN:
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    isRunning = false;
                 }
-                SDL_BlitSurface(gHellowWorld, NULL, gScreenSurface, NULL);
-                SDL_UpdateWindowSurface(gWindow);
+                break;
             }
         }
+        SDL_BlitSurface(gHellowWorld, NULL, gScreenSurface, NULL);
+        SDL_UpdateWindowSurface(gWindow);
     }
 
     close();
+    return true;
 }

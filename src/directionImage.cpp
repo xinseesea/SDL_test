@@ -1,9 +1,9 @@
 #include "directionImage.h"
 #include <iostream>
 
-static const int num = 6;
-const std::array<KeyPress, num> allKeyPress = {KeyPress::KEY_PRESS_DEFAULT, KeyPress::KEY_PRESS_UP, KeyPress::KEY_PRESS_DOWN, KeyPress::KEY_PRESS_LEFT, KeyPress::KEY_PRESS_RIGHT, KeyPress::KEY_PRESS_TOTAL};
-const std::map<KeyPress, std::string> imgFiles = {{KeyPress::KEY_PRESS_DEFAULT, "img/marriage.png"}, {KeyPress::KEY_PRESS_UP, "img/upper.png"}, {KeyPress::KEY_PRESS_DOWN, "img/lower.png"}, {KeyPress::KEY_PRESS_LEFT, "img/left.png"}, {KeyPress::KEY_PRESS_RIGHT, "right.png"}};
+static const int num = 5;
+const std::array<KeyPress, num> allKeyPress = {KeyPress::KEY_PRESS_DEFAULT, KeyPress::KEY_PRESS_UP, KeyPress::KEY_PRESS_DOWN, KeyPress::KEY_PRESS_LEFT, KeyPress::KEY_PRESS_RIGHT};
+const std::map<KeyPress, std::string> imgFiles = {{KeyPress::KEY_PRESS_DEFAULT, "img/marriage.png"}, {KeyPress::KEY_PRESS_UP, "img/upper.png"}, {KeyPress::KEY_PRESS_DOWN, "img/lower.png"}, {KeyPress::KEY_PRESS_LEFT, "img/left.png"}, {KeyPress::KEY_PRESS_RIGHT, "img/right.png"}};
 
 bool directionImage::init() {
     bool success = true;
@@ -39,8 +39,8 @@ bool directionImage::loadMedia() {
         keyPressSurface[key] = loadSurface(imgFiles.at(key));
         if (!keyPressSurface[key]) {
             std::cout << "Failed to load image: " << imgFiles.at(key) << std::endl;
+            success = false;
         }
-        success = false;
     }
 
     return success;
@@ -54,4 +54,53 @@ void directionImage::close() {
     SDL_DestroyWindow(window);
     SDL_Quit();
     window = nullptr;
+}
+
+bool directionImage::run() {
+    if (!init()) {
+        std::cout << "Init failed" << std::endl;
+        return false;
+    }
+
+    if (!loadMedia()) {
+        std::cout << "Load Media failed" << std::endl;
+        return false;
+    }
+
+    currentSurface = keyPressSurface[KeyPress::KEY_PRESS_DEFAULT];
+    bool quit = false;
+    SDL_Event event;
+
+    while (!quit) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                quit = true;
+            } else if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                    case SDLK_UP:
+                        currentSurface = keyPressSurface[KeyPress::KEY_PRESS_UP];
+                        break;
+                    case SDLK_DOWN:
+                        currentSurface = keyPressSurface[KeyPress::KEY_PRESS_DOWN];
+                        break;
+                    case SDLK_LEFT:
+                        currentSurface = keyPressSurface[KeyPress::KEY_PRESS_LEFT];
+                        break;
+                    case SDLK_RIGHT:
+                        currentSurface = keyPressSurface[KeyPress::KEY_PRESS_RIGHT];
+                        break;
+                    default:
+                        currentSurface = keyPressSurface[KeyPress::KEY_PRESS_DEFAULT];
+                        break;
+                }
+            }
+        }
+
+        SDL_SetWindowSize(window, currentSurface->w, currentSurface->h);
+        screenSurface = SDL_GetWindowSurface(window);
+        SDL_BlitSurface(currentSurface, NULL, screenSurface, NULL);
+        SDL_UpdateWindowSurface(window);
+    }
+
+    return true;
 }

@@ -17,5 +17,5 @@ class ShowImage
 
 public:
     ShowImage(std::string file = "") : imageFile(file) {};
-    void loadImage();
+    bool run();
 };
