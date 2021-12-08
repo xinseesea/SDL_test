@@ -5,7 +5,7 @@ static const int num = 5;
 const std::array<KeyPress, num> allKeyPress = {KeyPress::KEY_PRESS_DEFAULT, KeyPress::KEY_PRESS_UP, KeyPress::KEY_PRESS_DOWN, KeyPress::KEY_PRESS_LEFT, KeyPress::KEY_PRESS_RIGHT};
 const std::map<KeyPress, std::string> imgFiles = {{KeyPress::KEY_PRESS_DEFAULT, "img/marriage.png"}, {KeyPress::KEY_PRESS_UP, "img/upper.png"}, {KeyPress::KEY_PRESS_DOWN, "img/lower.png"}, {KeyPress::KEY_PRESS_LEFT, "img/left.png"}, {KeyPress::KEY_PRESS_RIGHT, "img/right.png"}};
 
-bool directionImage::init() {
+bool DirectionImage::init() {
     bool success = true;
 
     // Initialize SDL
@@ -23,7 +23,7 @@ bool directionImage::init() {
     return success;
 }
 
-SDL_Surface* directionImage::loadSurface(const std::string& imgFile) {
+SDL_Surface* DirectionImage::loadSurface(const std::string& imgFile) {
     SDL_Surface* surface = IMG_Load(imgFile.c_str());
     if (!surface) {
         std::cout << "Unable to load image: " << imgFile
@@ -32,7 +32,7 @@ SDL_Surface* directionImage::loadSurface(const std::string& imgFile) {
     return surface;
 }
 
-bool directionImage::loadMedia() {
+bool DirectionImage::loadMedia() {
     bool success = true;
 
     for (const KeyPress& key : allKeyPress) {
@@ -46,7 +46,7 @@ bool directionImage::loadMedia() {
     return success;
 }
 
-void directionImage::close() {
+void DirectionImage::close() {
     for (auto& keySufacePair : keyPressSurface) {
         SDL_FreeSurface(keySufacePair.second);
         keySufacePair.second = nullptr;
@@ -56,7 +56,7 @@ void directionImage::close() {
     window = nullptr;
 }
 
-bool directionImage::run() {
+bool DirectionImage::run() {
     if (!init()) {
         std::cout << "Init failed" << std::endl;
         return false;

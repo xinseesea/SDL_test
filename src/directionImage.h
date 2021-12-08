@@ -12,7 +12,7 @@ enum class KeyPress : uint8_t {
     KEY_PRESS_RIGHT,
 };
 
-class directionImage {
+class DirectionImage {
     SDL_Window *window = nullptr;
     SDL_Surface *screenSurface = nullptr;
     SDL_Surface *currentSurface = nullptr;
